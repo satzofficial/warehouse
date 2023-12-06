@@ -98,6 +98,7 @@ class Basic extends Controller
         'reorder_point' => $request->reorder_point        
       ];
       // dd($data);
+      
       $createdItem = Items::create($data);
       $insertedId = $createdItem->id;
       if ($request->hasFile('images')){
