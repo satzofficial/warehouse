@@ -1,0 +1,59 @@
+{
+  "menu": [
+    {
+      "url": "/",
+      "name": "Dashboards",
+      "icon": "menu-icon tf-icons bx bx-home-circle",
+      "slug": "dashboard",
+      "badge": [
+        "danger",
+        "1"
+      ],
+      "submenu": [
+        {
+          "url": "/",
+          "name": "Home",
+          "slug": "dashboard-analytics"
+        }
+      ]
+    },
+    {
+      "name": "Inventory",
+      "icon": "menu-icon tf-icons bx bx-layout",
+      "slug": "layouts",
+      "submenu": [
+        {
+          "url": "items",
+          "name": "Items",
+          "slug": "items"
+        },
+        {
+          "url": "composite-items",
+          "name": "Composite Items",
+          "slug": "composite-items"
+        },
+        {
+          "url": "layouts/container",
+          "name": "Items Groups",
+          "slug": "layouts-container"
+        },
+        {
+          "url": "layouts/fluid",
+          "name": "Price List",
+          "slug": "layouts-fluid"
+        },
+        {
+          "url": "layouts/blank",
+          "name": "Inventory Adjustments",
+          "slug": "layouts-blank"
+        }
+      ]
+    },
+    {
+      "url": "auth/login-basic",
+      "name": "Logout",
+      "icon": "menu-icon tf-icons bx bx-lock-open-alt",
+      "slug": "app-chat"
+    }
+  ]
+}
