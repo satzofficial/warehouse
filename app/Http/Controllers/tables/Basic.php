@@ -97,8 +97,7 @@ class Basic extends Controller
         'opening_stock_rate_per_unit' => $request->opening_stock_rate_per_unit,
         'reorder_point' => $request->reorder_point        
       ];
-      // dd($data);
-      
+      // dd($data);      
       $createdItem = Items::create($data);
       $insertedId = $createdItem->id;
       if ($request->hasFile('images')){
