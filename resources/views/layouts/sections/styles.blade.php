@@ -14,10 +14,14 @@
 <link rel="stylesheet" href="{{ asset(mix('assets/css/demo.css')) }}" />
 <!-- Vendors CSS -->
 <link rel="stylesheet" href="{{ asset(mix('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css')) }}" />
-<link rel="stylesheet" href="{{ mix('css/app.css') }}">
+<link rel="stylesheet" href="{{ asset(mix('css/app.css')) }}">
 
-<link rel="stylesheet"
-    href="https://demos.themeselection.com/sneat-bootstrap-html-laravel-admin-template/demo/assets/vendor/libs/dropzone/dropzone.css">
+{{-- <link rel="stylesheet" href="{{ asset(mix('assets/vendor/libs/dropzone/dropzone.css')) }}"> --}}
+
+
+
+{{-- <link rel="stylesheet"
+    href="https://demos.themeselection.com/sneat-bootstrap-html-laravel-admin-template/demo/assets/vendor/libs/dropzone/dropzone.css"> --}}
 
 
 <!-- Vendor Styles -->

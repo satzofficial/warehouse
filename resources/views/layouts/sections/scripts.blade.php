@@ -1,3 +1,6 @@
+<script>
+    window.customCsrfToken = '{{ csrf_token() }}';
+</script>
 <!-- BEGIN: Vendor JS-->
 <script src="{{ asset(mix('assets/vendor/libs/jquery/jquery.js')) }}"></script>
 <script src="{{ asset(mix('assets/vendor/libs/popper/popper.js')) }}"></script>

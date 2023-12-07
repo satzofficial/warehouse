@@ -44,6 +44,8 @@ use App\Http\Controllers\form_layouts\VerticalForm;
 use App\Http\Controllers\form_layouts\HorizontalForm;
 use App\Http\Controllers\tables\Basic as TablesBasic;
 
+
+Route::middleware('xss-sanitization')->group(function () {
 // Main Page Route
 Route::get('/', [Analytics::class, 'index'])->name('dashboard-analytics');
 
@@ -116,3 +118,4 @@ Route::post('/add-items-create', [TablesBasic::class, 'create'])->name('add_item
 
 // Composite items
 Route::get('/composite-items', [TablesBasic::class, 'composite_items'])->name('composite-items');
+});

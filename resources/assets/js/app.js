@@ -5,6 +5,10 @@ import toastr from 'toastr';
 window.toastr = toastr;
 
 window.jQuery(document).ready(function () {
+  axios.defaults.withCredentials = true;
+  axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequests';
+  axios.defaults.headers.common['X-Forwarded-Port'] = window.location.port;
+
   // Custom validation method for checking the file extension
   $.validator.addMethod(
     'extension',
@@ -107,16 +111,25 @@ window.jQuery(document).ready(function () {
       // console.log(document.getElementById('dropzone-multi'), mergedFormData);
       // return;
 
-      formData.submit();
-      return;
-      // // Send form data to the backend using Axios
+      // formData.submit();
+      // return;
       let url = $(form).attr('action');
+      axios.defaults.headers.common['X-CSRF-TOKEN'] = document
+        .querySelector('meta[name="csrf-token"]')
+        .getAttribute('content');
+
+      axios.defaults.headers.common['X-Special-CSRF-Token'] = window.customCsrfToken;
       axios
         .post(url, form)
         .then(function (response) {
           // Handle the response from the backend
           console.log('response.data', response.data);
-          // Additional actions or redirection if needed
+          if (response.data.status == true) {
+            window.toastr.success(response.data.msg);
+            setTimeout(() => {
+              window.location.href = response.data.redirect;
+            }, 2000);
+          }
         })
         .catch(function (error) {
           // Handle the error response from the backend

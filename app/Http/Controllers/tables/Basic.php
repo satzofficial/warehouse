@@ -5,7 +5,9 @@ namespace App\Http\Controllers\tables;
 use App\Http\Controllers\Controller;
 use App\Models\Items;
 use App\Models\ItemsImage;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class Basic extends Controller
@@ -17,7 +19,8 @@ class Basic extends Controller
 
   public function items()
   {
-    return view('content.tables.items');
+    $ItemsArr = Items::where('status', '1')->get();
+    return view('content.tables.items', compact('ItemsArr'));
   }
 
   public function composite_items()
@@ -25,55 +28,40 @@ class Basic extends Controller
     return view('content.tables.composite_items');
   }
 
-  public function add_items(){
+  public function add_items()
+  {
     return view('content.tables.add_items');
   }
 
-  public function create(Request $request){
-
-      
-        // Validation rules
-        $rules = [
-          'name' => 'trim|required',
-          'sku' => 'trim|required',
-          'unit' => 'trim|required',
-          'dimensions' => 'trim|required',
-          'manufacturer' => 'trim|required',
-          'upc' => 'trim|required',
-          'ean' => 'trim|required',
-          'weight' => 'trim|required',
-          'brand' => 'trim|required',
-          'mpn' => 'trim|required',
-          'isbn' => 'trim|required',
-          'selling_price' => 'trim|required',
-          'account' => 'trim|required',
-          'description' => 'trim|required',
-          'cost_price' => 'trim|required',
-          'purchase_account' => 'trim|required',
-          'purchase_description' => 'trim|required',
-          'preferred_vendor' => 'trim|required',
-          'opening_stock' => 'trim|required',
-          'opening_stock_rate_per_unit' => 'trim|required',
-          'reorder_point' => 'trim|required',
-          // 'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Validate each image in the array
+  public function create(Request $request)
+  {
+    try {
+      // Validation rules
+      $rules = [
+        'name' => 'required',
+        'sku' => 'required',
+        'unit' => 'required',
+        'dimensions' => 'required',
+        'manufacturer' => 'required',
+        'upc' => 'required',
+        'ean' => 'required',
+        'weight' => 'required',
+        'brand' => 'required',
+        'mpn' => 'required',
+        'isbn' => 'required',
+        'selling_price' => 'required',
+        'account' => 'required',
+        'description' => 'required',
+        'cost_price' => 'required',
+        'purchase_account' => 'required',
+        'purchase_description' => 'required',
+        'preferred_vendor' => 'required',
+        'opening_stock' => 'required',
+        'opening_stock_rate_per_unit' => 'required',
+        'reorder_point' => 'required',
+        'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Validate each image in the array
       ];
-
       $request->validate($rules);
-      
-      // // Custom error messages
-      // $messages = [
-      //     // 'images.*.image' => 'Each file must be an image.',
-      //     // 'images.*.mimes' => 'Allowed image file types: jpeg, png, jpg, gif.',
-      //     // 'images.*.max' => 'Each image must not exceed 2MB.',
-      // ];
-
-      // // Validate the request
-      // $validator = Validator::make($request->all(), $rules, $messages);
-
-      // // Check for validation errors
-      // if ($validator->fails()) {        
-      //     return redirect()->back()->withErrors($validator)->withInput();
-      // }
       $data = [
         'name' => $request->name,
         'sku' => $request->sku,
@@ -95,23 +83,48 @@ class Basic extends Controller
         'preferred_vendor' => $request->preferred_vendor,
         'opening_stock' => $request->opening_stock,
         'opening_stock_rate_per_unit' => $request->opening_stock_rate_per_unit,
-        'reorder_point' => $request->reorder_point        
+        'reorder_point' => $request->reorder_point,
       ];
-      // dd($data);      
       $createdItem = Items::create($data);
       $insertedId = $createdItem->id;
-      if ($request->hasFile('images')){
+      if ($request->hasFile('images')) {
+        $imageName = '';
         foreach ($request->file('images') as $image) {
-          $imageName = $image->getClientOriginalName();
-          $image->move(public_path('images'), $imageName);
+          // local storage
+          // $imageName = $image->getClientOriginalName();
+          // $uploadedFile = $image->move(public_path('images'), $imageName);
+          //   if($uploadedFile){
+          //     $slupload = Cloudinary::upload($image->getRealPath());
+          //     if($slupload){
+          //       $imageName = $slupload->getSecurePath();
+          //     }
+          // }
+
+          $slupload = Cloudinary::upload($image->getRealPath());
+          if ($slupload) {
+            $imageName = $slupload->getSecurePath();
+          }
           $data = [
             'image_id' => $insertedId,
-            'image' => $imageName
+            'image' => $imageName,
+            'type' => 'item_image',
           ];
           ItemsImage::create($data);
         }
       }
 
-      return response()->json(['status' => true, 'msg' => 'Item added successfully', 'redirect' => '2']);
+      if ($request->header('X-Requested-With') === 'XMLHttpRequests') {
+        return response()->json(['status' => true, 'msg' => 'Item added successfully!.', 'redirect' => route('items')]);
+      } else {
+        return redirect()
+          ->route('items')
+          ->with(['success' => 'Item added successfully!.']);
+      }
+    } catch (\Exception $e) {
+      // Handle the exception
+      Log::error('Exception caught: ' . $e->getMessage());
+
+      return response()->json(['status' => false, 'msg' => 'An error occurred.']);
+    }
   }
 }
