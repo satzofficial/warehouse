@@ -19,7 +19,9 @@ class Basic extends Controller
 
   public function items()
   {
-    $ItemsArr = Items::where('status', '1')->get();
+    $ItemsArr = Items::where('status', '1')
+      ->orderBy('id', 'desc')
+      ->get();
     return view('content.tables.items', compact('ItemsArr'));
   }
 
@@ -119,6 +121,73 @@ class Basic extends Controller
         return redirect()
           ->route('items')
           ->with(['success' => 'Item added successfully!.']);
+      }
+    } catch (\Exception $e) {
+      // Handle the exception
+      Log::error('Exception caught: ' . $e->getMessage());
+
+      return response()->json(['status' => false, 'msg' => 'An error occurred.']);
+    }
+  }
+
+  public function delete(Request $request, $id = null)
+  {
+    try {
+      if ($request->header('X-Requested-With') === 'XMLHttpRequests') {
+        if ($id) {
+          $OrginalId = decryptIt($id);
+          $item = Items::findOrFail($OrginalId);
+          $item->delete();
+          ItemsImage::where('image_id', $OrginalId)->delete();
+
+          if ($request->header('X-Requested-With') === 'XMLHttpRequests') {
+            return response()->json([
+              'status' => true,
+              'msg' => 'Item deleted successfully',
+              'redirect' => '',
+            ]);
+          }
+        }
+      } else {
+        abort(304);
+      }
+    } catch (\Exception $e) {
+      // Handle the exception
+      Log::error('Exception caught: ' . $e->getMessage());
+
+      return response()->json(['status' => false, 'msg' => 'An error occurred.']);
+    }
+  }
+
+  public function update(Request $request, $id = null)
+  {
+    try {
+      if ($request->isMethod('get')) {
+        $ItemsArr = Items::where('status', '1')
+          ->where('id', $id)
+          ->first();
+        return view('content.tables.edit_items', compact('ItemsArr'));
+      }
+
+      if ($request->isMethod('post')) {
+        if ($request->header('X-Requested-With') === 'XMLHttpRequests') {
+          if ($id) {
+            $OrginalId = decryptIt($id);
+            $item = Items::findOrFail($OrginalId);
+            $item->delete();
+            ItemsImage::where('image_id', $OrginalId)->delete();
+
+            if ($request->header('X-Requested-With') === 'XMLHttpRequests') {
+              return response()->json([
+                'status' => true,
+                'msg' => 'Item deleted successfully',
+                'redirect' => '',
+              ]);
+            }
+          }
+        } else {
+          abort(304);
+        }
       }
     } catch (\Exception $e) {
       // Handle the exception

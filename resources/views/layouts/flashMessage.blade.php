@@ -5,7 +5,6 @@
     </p>
 </div>
 @endif
-
 @if (Session::has('success'))
 <div class="bg-green-200 border-green-600 text-green-600 border-l-4 p-4" role="alert">
     <p class="font-bold">
@@ -13,8 +12,6 @@
     </p>
 </div>
 @endif --}}
-
-
 {{-- @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
@@ -24,9 +21,7 @@
         </ul>
     </div>
 @endif  --}}
-
 <script>
-    console.log(toastr);
     @if (Session::has('success'))
         toastr.success("{{ Session::get('success') }}");
     @endif

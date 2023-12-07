@@ -1,22 +1,19 @@
 <script>
-    window.customCsrfToken = '{{ csrf_token() }}';
+    window.customCsrfToken = '{{ bcrypt(csrf_token()) }}';
 </script>
 <!-- BEGIN: Vendor JS-->
 <script src="{{ asset(mix('assets/vendor/libs/jquery/jquery.js')) }}"></script>
 <script src="{{ asset(mix('assets/vendor/libs/popper/popper.js')) }}"></script>
 <script src="{{ asset(mix('assets/vendor/js/bootstrap.js')) }}"></script>
 <script src="{{ asset(mix('js/app.js')) }}"></script>
-
 <script src="{{ asset(mix('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js')) }}"></script>
 <script src="{{ asset(mix('assets/vendor/js/menu.js')) }}"></script>
 {{-- <script
     src="https://demos.themeselection.com/sneat-bootstrap-html-laravel-admin-template/demo/assets/vendor/libs/dropzone/dropzone.js">
 </script> --}}
-
 {{-- <script
     src="https://demos.themeselection.com/sneat-bootstrap-html-laravel-admin-template/demo/assets/js/forms-file-upload.js">
 </script> --}}
-
 {{-- <script>
     "use strict";
     ! function() {
@@ -95,33 +92,3 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css">
 @include('layouts/flashMessage')
-
-{{-- 
-<script>
-    console.log(toastr);
-    @if (Session::has('success'))
-        toastr.success("{{ Session::get('success') }}");
-    @endif
-
-
-    @if (Session::has('info'))
-        toastr.info("{{ Session::get('info') }}");
-    @endif
-
-
-    @if (Session::has('warning'))
-        toastr.warning("{{ Session::get('warning') }}");
-    @endif
-
-
-    @if (Session::has('error'))
-        toastr.error("{{ Session::get('error') }}");
-    @endif
-
-
-    @if ($errors->any())
-        @foreach ($errors->all() as $error)
-            toastr.error("{{ $error }}");
-        @endforeach
-    @endif
-</script> --}}

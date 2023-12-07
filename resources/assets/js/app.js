@@ -1,13 +1,25 @@
 import './plugins/datatables-bootstrap5';
 import 'jquery-validation';
 import axios from 'axios';
+
 import toastr from 'toastr';
 window.toastr = toastr;
+
+import Swal from 'sweetalert2';
+window.Swal = Swal;
+
+// window.Popper = require('popper.js').default;
+// window.$ = window.jQuery = require('jquery');
 
 window.jQuery(document).ready(function () {
   axios.defaults.withCredentials = true;
   axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequests';
   axios.defaults.headers.common['X-Forwarded-Port'] = window.location.port;
+
+  axios.defaults.headers.common['X-CSRF-TOKEN'] = document
+    .querySelector('meta[name="csrf-token"]')
+    .getAttribute('content');
+  axios.defaults.headers.common['X-Special-CSRF-Token'] = window.customCsrfToken;
 
   // Custom validation method for checking the file extension
   $.validator.addMethod(
@@ -114,16 +126,16 @@ window.jQuery(document).ready(function () {
       // formData.submit();
       // return;
       let url = $(form).attr('action');
-      axios.defaults.headers.common['X-CSRF-TOKEN'] = document
-        .querySelector('meta[name="csrf-token"]')
-        .getAttribute('content');
+      // axios.defaults.headers.common['X-CSRF-TOKEN'] = document
+      //   .querySelector('meta[name="csrf-token"]')
+      //   .getAttribute('content');
 
-      axios.defaults.headers.common['X-Special-CSRF-Token'] = window.customCsrfToken;
+      // axios.defaults.headers.common['X-Special-CSRF-Token'] = window.customCsrfToken;
       axios
         .post(url, form)
         .then(function (response) {
           // Handle the response from the backend
-          console.log('response.data', response.data);
+          // console.log('response.data', response.data);
           if (response.data.status == true) {
             window.toastr.success(response.data.msg);
             setTimeout(() => {
@@ -150,4 +162,50 @@ window.jQuery(document).ready(function () {
     e.preventDefault();
     window.jQuery('#myform-submit-btn').click();
   });
+
+  var closeIcons = document.getElementsByClassName('show-alert');
+  for (let i = 0; i < closeIcons.length; i++) {
+    closeIcons[i].addEventListener('click', function (e) {
+      e.preventDefault();
+
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, cancel!',
+        reverseButtons: true
+      }).then(result => {
+        if (result.isConfirmed) {
+          // User clicked "Yes, delete it!"
+          const url = this.getAttribute('data-url');
+
+          // Perform the AJAX request
+          axios
+            .post(`${url}`)
+            .then(response => {
+              if (response.data.status == true) {
+                // Swal.fire('Deleted!', 'Your item has been deleted.', 'success');
+                if (response.data.status == true) {
+                  window.toastr.success(response.data.msg);
+                  setTimeout(() => {
+                    window.location.reload(true);
+                  }, 1000);
+                }
+              } else {
+                Swal.fire('Error!', 'Failed to delete the item.', 'error');
+              }
+            })
+            .catch(error => {
+              console.error('AJAX request failed:', error);
+              Swal.fire('Error!', 'An error occurred during the request.', 'error');
+            });
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          // User clicked "No, cancel"
+          // Swal.fire('Cancelled', 'Your item is safe :)', 'info');
+        }
+      });
+    });
+  }
 });

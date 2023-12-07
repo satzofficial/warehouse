@@ -48,7 +48,7 @@
                                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
                                             data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="javascript:void(0);"><svg
+                                            <a class="dropdown-item" href="{{ route('items.edit',['id'=> $value->id]) }}"><svg
                                                     xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                                     viewBox="0 0 24 24">
                                                     <path fill="currentColor"
@@ -56,9 +56,10 @@
                                                     <path fill="currentColor"
                                                         d="M5 21h14c1.103 0 2-.897 2-2v-8.668l-2 2V19H8.158c-.026 0-.053.01-.079.01c-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2z" />
                                                 </svg> Edit</a>
-                                            <a class="dropdown-item" href="javascript:void(0);"><svg
-                                                    xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                                    viewBox="0 0 24 24">
+                                            <a class="dropdown-item show-alert"
+                                                data-url="{{ route('items_delete', ['id' => encryptIt($value->id)]) }}"
+                                                href="javascript:void(0);"><svg xmlns="http://www.w3.org/2000/svg"
+                                                    width="20" height="20" viewBox="0 0 24 24">
                                                     <path fill="currentColor"
                                                         d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21H7Zm2-4h2V8H9v9Zm4 0h2V8h-2v9Z" />
                                                 </svg> Delete</a>
