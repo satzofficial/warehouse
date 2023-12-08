@@ -210,10 +210,11 @@
             <button type="submit" class="btn btn-success submit" id="myform-submit-btn"
                 style="display:none;">Submit</button>
 
-            <div class="card mb-12">
+            <div class="card">
                 <div class="card-body">
                     <div class="col-md-12">
-                        <button type="button" class="btn btn-success submit-all">Submit</button>
+                        <a href="{{ route('items') }}" class="btn btn-primary float-left ">Back</a>
+                        <button type="button" class="btn btn-success submit-all float-right">Submit</button>
                     </div>
                 </div>
             </div>

@@ -147,3 +147,8 @@ mix
  */
 
 mix.browserSync('http://127.0.0.1:8000/');
+// mix.browserSync({
+//   proxy: 'http://127.0.0.1:8000/',
+//   files: ['app/**/*.php', 'resources/views/**/*.php', 'public/js/**/*.js', 'public/css/**/*.css'],
+//   ui: false // Disable BrowserSync UI overlay
+// });

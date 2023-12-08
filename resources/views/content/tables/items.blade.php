@@ -33,6 +33,9 @@
                 <tbody class="table-border-bottom-0">
                     @if ($ItemsArr->isNotEmpty())
                         @foreach ($ItemsArr as $key => $value)
+                            @php
+                                $id = $value->id;
+                            @endphp
                             <tr>
                                 <td><i class="bx bxl-angular bx-sm text-danger me-3"></i>
                                     <span class="fw-medium">{{ $value->name }}</span>
@@ -48,7 +51,7 @@
                                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
                                             data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="{{ route('items.edit',['id'=> $value->id]) }}"><svg
+                                            <a class="dropdown-item" href="{{ route('items.edit', ['id' => $id]) }}"><svg
                                                     xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                                     viewBox="0 0 24 24">
                                                     <path fill="currentColor"
@@ -57,22 +60,23 @@
                                                         d="M5 21h14c1.103 0 2-.897 2-2v-8.668l-2 2V19H8.158c-.026 0-.053.01-.079.01c-.033 0-.066-.009-.1-.01H5V5h6.847l2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2z" />
                                                 </svg> Edit</a>
                                             <a class="dropdown-item show-alert"
-                                                data-url="{{ route('items_delete', ['id' => encryptIt($value->id)]) }}"
+                                                data-url="{{ route('items_delete', ['id' => encryptIt($id)]) }}"
                                                 href="javascript:void(0);"><svg xmlns="http://www.w3.org/2000/svg"
                                                     width="20" height="20" viewBox="0 0 24 24">
                                                     <path fill="currentColor"
                                                         d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21H7Zm2-4h2V8H9v9Zm4 0h2V8h-2v9Z" />
                                                 </svg> Delete</a>
-                                            <a class="dropdown-item" href="javascript:void(0);"><i
+                                            <a class="dropdown-item btn-overview-show-actions"
+                                                data-id="{{ encryptIt($id) }}" href="javascript:;"><i
                                                     class="bx bx-edit-alt me-1"></i> Overview</a>
-                                            <a class="dropdown-item" href="javascript:void(0);">
+                                            <a class="dropdown-item" href="javascript:;">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                     viewBox="0 0 24 24">
                                                     <path fill="currentColor"
                                                         d="M14.5 3a2.5 2.5 0 1 0 0 5a2.5 2.5 0 0 0 0-5ZM10 5.5a4.5 4.5 0 0 1 6.5-4.032a4.5 4.5 0 1 1 0 8.064A4.5 4.5 0 0 1 10 5.5Zm8.25 2.488a2.5 2.5 0 1 0 0-4.975A4.48 4.48 0 0 1 19 5.5a4.48 4.48 0 0 1-.75 2.488ZM8.435 13.25a1.25 1.25 0 0 0-.885.364l-2.05 2.05V19.5h5.627l5.803-1.45l3.532-1.508a.555.555 0 0 0-.416-1.022l-.02.005L13.614 17H10v-2h3.125a.875.875 0 1 0 0-1.75h-4.69Zm7.552 1.152l3.552-.817a2.56 2.56 0 0 1 3.211 2.47a2.557 2.557 0 0 1-1.414 2.287l-.027.014l-3.74 1.595l-6.196 1.549H0v-7.25h4.086l2.052-2.052a3.25 3.25 0 0 1 2.3-.948h.002h-.002h4.687a2.875 2.875 0 0 1 2.862 3.152ZM3.5 16.25H2v3.25h1.5v-3.25Z" />
                                                 </svg>
                                                 Transaction</a>
-                                            <a class="dropdown-item btn-show-actions" href="javascript:void(0);">
+                                            <a class="dropdown-item " href="javascript:void(0);">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                     viewBox="0 0 24 24">
                                                     <path fill="currentColor"
@@ -93,23 +97,23 @@
 @endsection
 
 @section('Datatable')
-
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Actions</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <h5 class="modal-title" id="exampleModalLabel">Item Overview</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <!-- Your modal content goes here -->
+                    <!-- Modal body content goes here -->
+                    <div class="container ">
+
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <!-- Additional buttons or actions -->
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
                 </div>
             </div>
         </div>
@@ -118,10 +122,50 @@
     <script>
         $(document).ready(function() {
             $('.custom-table').DataTable();
-
-            $(document).on('click', '.btn-show-actions', function() {
+            let newDiv = document.querySelector("#myModal > div > div > div.modal-body > div");
+            $(document).on('click', '.btn-overview-show-actions', function() {
+                let _this = $(this);
                 var data = $('.custom-table').DataTable().row($(this).closest('tr')).data();
-                $('#myModal').modal('show');
+                let url = `{{ route('get.items.json') }}`;
+                axios
+                    .post(url, {
+                        form: '{{ rand(1000, 100000000) }}',
+                        id: _this.data('id')
+                    })
+                    .then(function(response) {
+                        // Handle the response from the backend
+                        // console.log('response.data', response.data);
+                        if (response.data.status == true) {
+                            console.log(response.data.data, typeof(response.data.data));
+                            let template = '';
+                            for (let key in response.data.data) {
+                                console.log(key, response.data.data[key]);
+                                let value = response.data.data[key];
+                                template += `<div class="row ">                                                
+                                                <div class="col-md-4">
+                                                    <p>${key}</p>
+                                                </div>                                                
+                                                <div class="col-md-8">
+                                                    <p>${value}</p>
+                                                </div>
+                                            </div>`;
+                            }
+                            newDiv.innerHTML = template;
+                            $('#myModal').modal('show');
+                        }
+                    })
+                    .catch(function(error) {
+                        // Handle the error response from the backend
+                        console.log(error.response.data);
+                        // Display error messages to the user
+                        if (error.response.data.errors) {
+                            $.each(error.response.data.errors, function(key, value) {
+                                $('#' + key).after('<div class="error-message">' + value +
+                                    '</div>');
+                            });
+                        }
+                    });
+
             });
 
 

@@ -1,15 +1,15 @@
+// import jquery from 'jquery';
+// $ = window.Jquery = window.$ = jquery;
 import './plugins/datatables-bootstrap5';
 import 'jquery-validation';
 import axios from 'axios';
+window.axios = axios;
 
 import toastr from 'toastr';
 window.toastr = toastr;
 
 import Swal from 'sweetalert2';
 window.Swal = Swal;
-
-// window.Popper = require('popper.js').default;
-// window.$ = window.jQuery = require('jquery');
 
 window.jQuery(document).ready(function () {
   axios.defaults.withCredentials = true;
@@ -126,11 +126,6 @@ window.jQuery(document).ready(function () {
       // formData.submit();
       // return;
       let url = $(form).attr('action');
-      // axios.defaults.headers.common['X-CSRF-TOKEN'] = document
-      //   .querySelector('meta[name="csrf-token"]')
-      //   .getAttribute('content');
-
-      // axios.defaults.headers.common['X-Special-CSRF-Token'] = window.customCsrfToken;
       axios
         .post(url, form)
         .then(function (response) {

@@ -350,3 +350,27 @@ function get_client_ip()
   }
   return $ipaddress;
 }
+
+if (!function_exists('underscoreToSpace')) {
+  /**
+   * Convert underscores to spaces and remove extra spaces.
+   *
+   * @param string $input
+   * @return string
+   */
+  function underscoreToSpace($input)
+  {
+    // dd($input);
+    if (!$input) {
+      return;
+    }
+
+    // Convert underscores to spaces
+    $output = str_replace('_', ' ', $input);
+
+    // Remove extra spaces
+    $output = preg_replace('/\s+/', ' ', $output);
+
+    return ucfirst(trim($output));
+  }
+}

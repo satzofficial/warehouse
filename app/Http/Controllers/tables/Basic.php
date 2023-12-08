@@ -25,6 +25,60 @@ class Basic extends Controller
     return view('content.tables.items', compact('ItemsArr'));
   }
 
+  public function items_json(Request $request)
+  {
+    if ($request->isMethod('post')) {
+      $newArr = [];
+      $rules = [
+        'id' => 'required',
+      ];
+      $request->validate($rules);
+      $select = [
+        'name',
+        'sku',
+        'unit',
+        'dimensions',
+        'manufacture',
+        'upc',
+        'ean',
+        'weight',
+        'brand',
+        'mpn',
+        'isbn',
+        'selling_price',
+        'account',
+        'description',
+        'cost_price',
+        'purchase_account',
+        'purchase_description',
+        'preferred_vendor',
+        'opening_stock',
+        'opening_stock_rate_per_unit',
+        'reorder_point',
+      ];
+      $ItemsArr = Items::select($select)
+        ->where('status', '1')
+        ->where('id', decryptIt($request->id))
+        ->orderBy('id', 'desc')
+        ->get()
+        ->toArray();
+
+      if ($request->header('X-Requested-With') === 'XMLHttpRequests') {
+        // dd($ItemsArr);
+        foreach ($ItemsArr[0] as $key => $value) {
+          $newArr[underscoreToSpace($key)] = ucfirst($value);
+        }
+        return response()->json([
+          'status' => true,
+          'msg' => 'Item get successfully!.',
+          'data' => $newArr,
+          'redirect' => '/',
+        ]);
+      }
+    }
+    abort(404);
+  }
+
   public function composite_items()
   {
     return view('content.tables.composite_items');

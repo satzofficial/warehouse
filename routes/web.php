@@ -122,6 +122,7 @@ Route::group(['middleware' => 'xss-sanitization', 'middleware' => 'verifyCustomC
   // Items
   Route::get('/items', [TablesBasic::class, 'items'])->name('items');
   Route::get('/add-items', [TablesBasic::class, 'add_items'])->name('add_items');
+  Route::post('/add-items-json', [TablesBasic::class, 'items_json'])->name('get.items.json');
   Route::post('/add-items-create', [TablesBasic::class, 'create'])->name('add_items_create');
   Route::post('/items-delete/{id?}', [TablesBasic::class, 'delete'])->name('items_delete');
   Route::match(['GET', 'POST'], '/items-edit/{id?}', [TablesBasic::class, 'update'])->name('items.edit');
