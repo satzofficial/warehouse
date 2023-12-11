@@ -41,6 +41,8 @@
     <!-- Include Scripts -->
     @include('layouts/sections/scripts')
 
+    
+
     @yield('Datatable')
     
 </body>

@@ -20,12 +20,15 @@
     {
       "name": "Inventory",
       "icon": "menu-icon tf-icons bx bx-layout",
-      "slug": "layouts",
+      "slug": "inventory",
       "submenu": [
         {
-          "url": "items",
+          "url": "inventory/items",
           "name": "Items",
-          "slug": "items"
+          "slug": "inventory.items",
+          "additional_submenu": [
+            {}
+          ]
         },
         {
           "url": "composite-items",

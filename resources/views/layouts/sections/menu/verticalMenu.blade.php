@@ -30,15 +30,33 @@
                 {{-- active menu method --}}
                 @php
                     $activeClass = null;
-                    $currentRouteName = Route::currentRouteName();
-
+                    echo $currentRouteName = Route::currentRouteName();
+                    echo '--' . $menu->slug;
+                    // var_dump($currentRouteName === $menu->slug);
+                    // @print_r($menu->submenu);
                     if ($currentRouteName === $menu->slug) {
                         $activeClass = 'active';
                     } elseif (isset($menu->submenu)) {
+                        var_dump(gettype($menu->slug) === 'array');
                         if (gettype($menu->slug) === 'array') {
                             foreach ($menu->slug as $slug) {
+                                var_dump(str_contains($currentRouteName, $slug) and strpos($currentRouteName, $slug) === 0);
                                 if (str_contains($currentRouteName, $slug) and strpos($currentRouteName, $slug) === 0) {
                                     $activeClass = 'active open';
+                                } else {
+                                    echo 'here';
+                                    // if (gettype($slug->additional_submenu) === 'array') {
+                                    //     foreach ($slug->additional_submenu as $additionalSlug) {
+                                    //         var_dump(str_contains($currentRouteName, $slug) and strpos($currentRouteName, $slug) === 0);
+                                    //         if (str_contains($currentRouteName, $slug) and strpos($currentRouteName, $slug) === 0) {
+                                    //             $activeClass = 'active open';
+                                    //         }
+                                    //     }
+                                    // } else {
+                                    //     if (str_contains($currentRouteName, $slug->additional_submenu) and strpos($currentRouteName, $slug->additional_submenu) === 0) {
+                                    //         $activeClass = 'active open';
+                                    //     }
+                                    // }
                                 }
                             }
                         } else {

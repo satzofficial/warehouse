@@ -66,7 +66,7 @@ class Basic extends Controller
       if ($request->header('X-Requested-With') === 'XMLHttpRequests') {
         // dd($ItemsArr);
         foreach ($ItemsArr[0] as $key => $value) {
-          $newArr[underscoreToSpace($key)] = ucfirst($value);
+          $newArr[__(underscoreToSpace($key))] = __(ucfirst($value));
         }
         return response()->json([
           'status' => true,
@@ -170,10 +170,14 @@ class Basic extends Controller
       }
 
       if ($request->header('X-Requested-With') === 'XMLHttpRequests') {
-        return response()->json(['status' => true, 'msg' => 'Item added successfully!.', 'redirect' => route('items')]);
+        return response()->json([
+          'status' => true,
+          'msg' => 'Item added successfully!.',
+          'redirect' => route('inventory.items'),
+        ]);
       } else {
         return redirect()
-          ->route('items')
+          ->route('inventory.items')
           ->with(['success' => 'Item added successfully!.']);
       }
     } catch (\Exception $e) {

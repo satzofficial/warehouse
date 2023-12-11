@@ -92,3 +92,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css">
 @include('layouts/flashMessage')
+
+<script>
+    // let currentUrl = window.location.href;
+    // let parts = url.split("/");
+    // let last_part = parts[parts.length - 1];
+    // let second_part = parts[parts.length - 2];
+
+    // $('.' + last_part).addClass('menu-is-opening menu-open');
+    // $('.' + second_part).addClass('menu-is-opening menu-open');
+    // $('#' + last_part).addClass('active');
+    // $('#' + second_part).addClass('active');
+</script>

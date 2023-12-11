@@ -254,7 +254,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="col-md-12">
-                        <a href="{{ route('items') }}" class="btn btn-primary float-left ">Back</a>
+                        <a href="{{ route('inventory.items') }}" class="btn btn-primary float-left ">Back</a>
                         <button type="button" class="btn btn-success submit-all float-right">Submit</button>
                     </div>
                 </div>

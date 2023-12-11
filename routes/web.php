@@ -120,12 +120,12 @@ Route::group(['middleware' => 'xss-sanitization', 'middleware' => 'verifyCustomC
   Route::get('/tables/basic', [TablesBasic::class, 'index'])->name('tables-basic');
 
   // Items
-  Route::get('/items', [TablesBasic::class, 'items'])->name('items');
-  Route::get('/add-items', [TablesBasic::class, 'add_items'])->name('add_items');
-  Route::post('/add-items-json', [TablesBasic::class, 'items_json'])->name('get.items.json');
-  Route::post('/add-items-create', [TablesBasic::class, 'create'])->name('add_items_create');
-  Route::post('/items-delete/{id?}', [TablesBasic::class, 'delete'])->name('items_delete');
-  Route::match(['GET', 'POST'], '/items-edit/{id?}', [TablesBasic::class, 'update'])->name('items.edit');
+  Route::get('inventory/items', [TablesBasic::class, 'items'])->name('inventory.items');
+  Route::get('/inventory/add-items', [TablesBasic::class, 'add_items'])->name('add_items');
+  Route::post('/inventory/add-items-json', [TablesBasic::class, 'items_json'])->name('get.items.json');
+  Route::post('/inventory/add-items-create', [TablesBasic::class, 'create'])->name('add_items_create');
+  Route::post('/inventory/items-delete/{id?}', [TablesBasic::class, 'delete'])->name('items_delete');
+  Route::match(['GET', 'POST'], '/inventory/items-edit/{id?}', [TablesBasic::class, 'update'])->name('items.edit');
 
   // Composite items
   Route::get('/composite-items', [TablesBasic::class, 'composite_items'])->name('composite-items');
